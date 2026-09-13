@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rigan Wines
 
-## Getting Started
+Marketing site for **Rigan Business Company Ltd**, a Cantine Birgi wine reseller based in Kigali, Rwanda. Built with Next.js (App Router), Tailwind v4, shadcn/ui, and Framer Motion.
 
-First, run the development server:
+Orders are taken over WhatsApp — there is no payment processing or backend; the site is fully static/client-rendered.
+
+## Stack
+
+- Next.js 16 (App Router, Turbopack)
+- Tailwind CSS v4
+- shadcn/ui + Framer Motion
+- No database, no API routes, no environment variables
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) (Next.js will pick the next free port if 3000 is taken).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/page.tsx` — assembles the page: Hero, FeaturedWine, Collection, OrderSection, footer.
+- `components/Hero.tsx` — landing hero with parallax background.
+- `components/FeaturedWine.tsx` — auto-rotating carousel through the wine catalog.
+- `components/Collection.tsx` — full wine grid; click a bottle for a detail modal.
+- `components/OrderSection.tsx` — contact info and WhatsApp/phone CTAs.
+- `components/CartProvider.tsx` / `components/CartButton.tsx` — client-side cart (React Context), checkout via a single WhatsApp message.
+- `lib/wines.ts` — single source of truth for the wine catalog (name, type, price, image, description). Update prices/wines here.
+- `public/wines/` — product photography, sourced from Cantine Birgi's official site (cantinebirgi.it) since Rigan resells their wines.
 
-## Learn More
+## Before shipping to production
 
-To learn more about Next.js, take a look at the following resources:
+- The Hero background (`public/wine-cellar-hero.png`) is an AI-generated placeholder from the original v0 design — swap it for licensed/owned photography.
+- Confirm all prices in `lib/wines.ts` are current before launch.
+- No analytics/error tracking is wired up yet.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploying
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+No environment variables or backend services are required — this is a static Next.js site with client-side interactivity only. See the deployment report for hosting recommendations.

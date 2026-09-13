@@ -37,7 +37,7 @@ export default function Hero() {
         <div className="max-w-3xl animate-[fade-up_1s_ease-out_both]">
           <p className="mb-7 flex items-center gap-3 text-[10px] font-medium tracking-[0.35em] text-[#c9a45c] uppercase sm:text-xs">
             <span className="h-px w-10 bg-[#c9a45c]" />
-            Est. 1987 · Sicilia
+            Sicilia
           </p>
           <h1 className="max-w-3xl font-serif text-5xl leading-[0.94] tracking-[-0.035em] text-balance sm:text-7xl lg:text-[7.5rem]">
             RIGAN BUSINESS
@@ -49,10 +49,11 @@ export default function Hero() {
           <p className="mb-8 text-xs font-medium tracking-[0.24em] text-[#d6b878] uppercase sm:text-sm">
             Italian wines · Sicilia · Terre Siciliane
           </p>
-          <a        
+          <a
             href="#collection"
             className="group inline-flex items-center gap-8 border border-[#c9a45c] px-6 py-4 text-[11px] font-medium tracking-[0.22em] text-[#f8f4eb] uppercase transition-colors duration-500 hover:bg-[#c9a45c] hover:text-[#0b0a09] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d6b878]"
           >
+            <span>Discover Collection</span>
             <span className="text-lg leading-none transition-transform duration-500 group-hover:translate-x-1" aria-hidden="true">→</span>
           </a>
         </div>

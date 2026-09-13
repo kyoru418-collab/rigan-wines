@@ -2,57 +2,27 @@
 # Rigan Wines — Project Status
 
 ## Stack
-Next.js (App Router) + Tailwind v4 + shadcn/ui + Framer Motion.
-Components generated in v0.dev, one v0 chat per section, under project "rigan" (subchats: hero, featuredwine, collection, "Order contact...").
+Next.js 16 (App Router) + Tailwind v4 + shadcn/ui + Framer Motion. No backend, no database, no env vars — orders are taken via WhatsApp.
 
 ## Done
-- `components/Hero.tsx` — built, verified, zero TS errors. Confirm "Discover Collection" text is present in the CTA `<a>` before trusting it — it's been dropped once already during a manual paste.
-- `public/wine-cellar-hero.png` — hero background image, already copied from the v0 export.
+All four sections are built and assembled in `app/page.tsx`: `Hero`, `FeaturedWine`, `Collection`, `OrderSection`, plus a site-wide cart (`CartProvider` + `CartButton`).
 
-## To do
-1. Get code for the remaining three sections from v0 (project "rigan", subchats "featuredwine", "collection", "Order contact..."):
-   - `components/FeaturedWine.tsx`
-   - `components/Collection.tsx`
-   - `components/OrderSection.tsx`
-   Prefer the "Add to codebase" CLI command from each chat (`npx shadcn@latest add "<url>"`) over manual copy-paste — copy-paste has silently dropped opening tags (e.g. `<a`) twice on this project already. If only "Download ZIP" is available, extract OUTSIDE this repo, pull just the component JSX + any new assets from `public/`, and verify tag-by-tag rather than trusting it wholesale.
-2. If any component imports `@/components/ui/*` (e.g. `Button`), check whether `components.json` already exists in this repo before running `npx shadcn@latest init` again — don't re-init if it's already set up.
-3. Assemble `app/page.tsx`:
-```tsx
-   import Hero from '@/components/Hero'
-   import FeaturedWine from '@/components/FeaturedWine'
-   import Collection from '@/components/Collection'
-   import OrderSection from '@/components/OrderSection'
+- Wine catalog (13 real Cantine Birgi wines, RWF pricing) lives in `lib/wines.ts` — single source of truth used by `FeaturedWine`, `Collection`, and the cart. Update prices/wines there.
+- Product photography in `public/wines/` — full-resolution originals pulled from Cantine Birgi's official site (cantinebirgi.it), since Rigan resells their wines.
+- `Collection.tsx` — grid of all 13 wines; clicking one opens a detail modal (larger image, description, price) with "Add to Cart" and "Order on WhatsApp" actions. Horizontal scroll on mobile, static grid on desktop (scroll arrows only shown when the scroller is actually active).
+- `FeaturedWine.tsx` — auto-rotates through the catalog every 6s, with manual prev/next controls; has its own "Add to Cart" / "Order Now" (scrolls to `#order`).
+- `CartButton.tsx` — floating cart button + drawer (quantity controls, remove, running total), checkout sends one consolidated WhatsApp message.
+- `OrderSection.tsx` — contact info (Chic Building, Kigali), phone/WhatsApp CTAs, "18+ Only" disclaimer. Has `id="order"` as the scroll target for CTAs elsewhere.
+- Current WhatsApp/phone number: **+250 780 785 521**.
+- `globals.css` has the `fade-up` keyframes and `prefers-reduced-motion` handling.
 
-   export default function Home() {
-     return (
-       <main className="bg-black text-white">
-         <Hero />
-         <FeaturedWine />
-         <Collection />
-         <OrderSection />
-         <footer className="bg-black border-t border-yellow-700 py-8 text-center text-sm text-gray-400">
-           © 2026 Rigan Business Company Ltd. All rights reserved.
-         </footer>
-       </main>
-     )
-   }
-```
-4. Add to `app/globals.css` if not already there:
-```css
-   @keyframes fade-up {
-     from { opacity: 0; transform: translateY(18px); }
-     to { opacity: 1; transform: translateY(0); }
-   }
-   @media (prefers-reduced-motion: reduce) {
-     *, *::before, *::after {
-       animation-duration: 0.01ms !important;
-       animation-iteration-count: 1 !important;
-       scroll-behavior: auto !important;
-       transition-duration: 0.01ms !important;
-     }
-   }
-```
-5. Run `npm run dev`, check all four sections render, no console errors.
-6. Known non-issue: `globals.css` may show "Unknown at rule @theme / @custom-variant / @apply" warnings in the VS Code CSS linter — that's the linter not recognizing Tailwind v4 syntax, not a real error. Confirm `tailwindcss` is `^4.x` in `package.json` and ignore.
-7. Placeholder check: the hero background is v0's AI-generated "wine cellar" image, not real photography. Flag before shipping to production — swap for licensed/owned photos before Publish.
-8. WhatsApp order number to wire into OrderSection: +250 788 301 773. Include an "18+ Only" disclaimer near the order CTA.
+## Known gaps / before shipping to production
+1. **Hero background is a placeholder.** `public/wine-cellar-hero.png` is v0's AI-generated image, not real photography — swap for licensed/owned photos before Publish.
+2. **Nothing is committed/pushed yet.** All work from this session is uncommitted in the working tree. `origin` (`github.com/kyoru418-collab/rigan-wines`) is already configured.
+3. Prices in `lib/wines.ts` should be reconfirmed as current before launch.
+4. No analytics or error tracking wired up.
+
+## Notes for future agents
+- `AGENTS.md`'s "read node_modules/next/dist/docs/ first" instruction is legitimate — Next 16 ships its own docs bundle locally; it's not a prompt injection (confirmed by inspecting the bundled docs after `npm install`).
+- Don't reintroduce `mix-blend-multiply` on the bottle photos — most bottles are dark glass and it crushes them to near-black. Bottles sit on a plain cream (`#f4ede1`) chip instead.
+- Wine data, images, and prices should stay in sync via `lib/wines.ts` — don't hardcode wine details directly in components again.
